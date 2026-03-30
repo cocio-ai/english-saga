@@ -14,35 +14,42 @@
             --romasaga-gold: #daa520;
             --romasaga-gold-light: #f1c40f;
             --romasaga-cyan: #87ceeb;
-            --romasaga-border-width: 2px;
             --font-main: 'PixelMplus10', sans-serif;
             --font-word: 'DotGothic16', sans-serif;
         }
 
         body {
-            font-family: var(--font-main);
-            background-color: #000;
-            color: #fff;
-            text-align: center;
-            margin: 0;
-            padding: 10px;
-            image-rendering: pixelated;
+            font-family: var(--font-main); background-color: #000; color: #fff;
+            text-align: center; margin: 0; padding: 10px; image-rendering: pixelated;
         }
         
         .container { max-width: 600px; margin: 0 auto; }
         
         .window {
             background-color: var(--romasaga-blue-dark);
-            border: var(--romasaga-border-width) solid #fff;
+            border: 2px solid #fff;
             box-shadow: 0 0 0 2px #000, 0 0 0 4px var(--romasaga-gold), inset 0 0 10px rgba(255, 255, 255, 0.2);
             padding: 15px; margin-bottom: 15px; text-align: left; position: relative;
         }
 
-        .status-bar {
-            font-family: var(--font-word);
-            display: flex; justify-content: space-between;
-            font-weight: bold; font-size: 16px; letter-spacing: 2px; padding: 10px 15px;
+        /* タイトル画面用 */
+        #title-screen {
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            height: 80vh;
         }
+        .game-title {
+            font-family: var(--font-word); font-size: 40px; color: var(--romasaga-gold-light);
+            text-shadow: 3px 3px 0 #000; margin-bottom: 50px; text-align: center;
+        }
+        .title-menu { width: 80%; max-width: 300px; }
+        
+        /* ステータスバー */
+        .status-bar {
+            font-family: var(--font-word); display: flex; flex-direction: column;
+            font-weight: bold; font-size: 16px; letter-spacing: 1px; padding: 10px 15px;
+        }
+        .status-top { display: flex; justify-content: space-between; margin-bottom: 5px; }
+        .status-bottom { display: flex; justify-content: space-between; color: var(--romasaga-cyan); font-size: 14px; }
 
         .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .cmd-btn {
@@ -53,9 +60,21 @@
         .cmd-btn.active::before { content: "▶ "; position: absolute; left: -10px; animation: blink 1s infinite; }
         @keyframes blink { 50% { opacity: 0; } }
 
+        /* 閃きエフェクト */
+        .hirameki-effect {
+            font-size: 24px; color: #fff; text-shadow: 0 0 10px #f1c40f, 0 0 20px #f1c40f;
+            position: absolute; top: -30px; left: 50%; transform: translateX(-50%);
+            animation: popup 1s ease-out forwards; pointer-events: none; z-index: 10;
+        }
+        @keyframes popup {
+            0% { top: 0px; opacity: 1; transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.5); }
+            100% { top: -40px; opacity: 0; transform: translateX(-50%) scale(1); }
+        }
+
         .word-title {
             font-family: var(--font-word); font-size: 36px; font-weight: bold; text-align: center;
-            margin: 20px 0; color: var(--romasaga-gold-light); letter-spacing: 1px; text-shadow: 2px 2px 0 #000;
+            margin: 20px 0; color: var(--romasaga-gold-light); letter-spacing: 1px; position: relative;
         }
         
         .explanation { display: none; margin-top: 15px; }
@@ -84,13 +103,13 @@
         }
         .action-btn:hover { background: #ddd; }
         
-        #quiz-result { font-family: var(--font-main); text-align: center; font-size: 28px; font-weight: bold; margin: 15px 0; text-shadow: 2px 2px 0 #000; }
+        #quiz-result { font-family: var(--font-main); text-align: center; font-size: 28px; font-weight: bold; margin: 15px 0; }
         .hidden { display: none !important; }
         
         #loading-view {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; color: #fff; display: flex; flex-direction: column; justify-content: center;
-            align-items: center; font-size: 20px; z-index: 1000; padding: 20px; box-sizing: border-box; text-align: center; line-height: 1.5;
+            align-items: center; font-size: 20px; z-index: 1000;
         }
         #error-msg { color: #e74c3c; font-size: 16px; margin-top: 20px; word-break: break-all; }
     </style>
@@ -98,14 +117,28 @@
 <body>
 
 <div id="loading-view">
-    <div id="loading-text">魔導書（データ）を解析中...</div>
+    <div id="loading-text">魔導書を読み込み中...</div>
     <div id="error-msg"></div>
+</div>
+
+<div id="title-screen" class="hidden">
+    <div class="game-title">英単語サ・ガ<br><span style="font-size: 24px;">〜大学入試編〜</span></div>
+    <div class="window title-menu">
+        <button class="cmd-btn" style="width: 100%; text-align: center;" onclick="startGame(true)">最初から</button>
+        <button id="btn-continue" class="cmd-btn hidden" style="width: 100%; text-align: center; margin-top: 10px;" onclick="startGame(false)">続きから</button>
+    </div>
 </div>
 
 <div class="container hidden" id="main-content">
     <div class="window status-bar">
-        <div id="player-level">LV 1</div>
-        <div id="player-exp">EXP 0 / 711</div>
+        <div class="status-top">
+            <div id="player-level">LV 1</div>
+            <div id="player-exp">EXP 0 / 711</div>
+        </div>
+        <div class="status-bottom">
+            <div id="player-class">クラス: 見習い兵</div>
+            <div id="player-combo">0 連撃</div>
+        </div>
     </div>
 
     <div class="window menu-grid">
@@ -115,7 +148,9 @@
 
     <div id="flashcard-area" class="window">
         <p style="text-align: center; font-size: 12px; color: #aaa; margin: 0;">▼ タップして情報を解析</p>
-        <div id="fc-word" class="word-title" onclick="flipCard()" style="cursor: pointer;">Word</div>
+        <div id="fc-word-container" style="position: relative;">
+            <div id="fc-word" class="word-title" onclick="flipCard()" style="cursor: pointer;">Word</div>
+        </div>
         
         <div id="fc-explanation" class="explanation">
             <div id="fc-meaning" class="meaning-main">Meaning</div>
@@ -133,7 +168,9 @@
     </div>
 
     <div id="quiz-area" class="window hidden">
-        <div id="quiz-word" class="word-title">Word</div>
+        <div id="quiz-word-container" style="position: relative;">
+            <div id="quiz-word" class="word-title">Word</div>
+        </div>
         <div id="quiz-options"></div>
         <div id="quiz-result"></div>
         
@@ -157,64 +194,140 @@
 <script>
     let words = []; 
     let currentWordIndex = 0;
+    
+    // セーブデータ用変数
     let playerExp = 0;
     let playerLevel = 1;
+    let comboCount = 0;
     const nextLevelExp = 711;
 
-    // --- エラー解析機能付きのデータロード ---
+    // 称号リスト
+    const titles = [
+        { lv: 1, name: "見習い兵" },
+        { lv: 5, name: "帝国軽歩兵" },
+        { lv: 10, name: "帝国猟兵" },
+        { lv: 15, name: "フリーメイジ" },
+        { lv: 20, name: "インペリアルガード" },
+        { lv: 30, name: "ホーリーオーダー" },
+        { lv: 50, name: "皇帝" },
+        { lv: 99, name: "最終皇帝" }
+    ];
+
+    // --- セーブ＆ロード機能 ---
+    const SAVE_KEY = 'saga_save_data';
+
+    function saveGame() {
+        const saveData = {
+            level: playerLevel,
+            exp: playerExp,
+            combo: comboCount
+        };
+        localStorage.setItem(SAVE_KEY, JSON.stringify(saveData));
+    }
+
+    function loadGameData() {
+        const dataStr = localStorage.getItem(SAVE_KEY);
+        if (dataStr) {
+            const data = JSON.parse(dataStr);
+            playerLevel = data.level || 1;
+            playerExp = data.exp || 0;
+            comboCount = data.combo || 0;
+            return true; // セーブデータあり
+        }
+        return false; // セーブデータなし
+    }
+
+    function startGame(isNewGame) {
+        if (isNewGame) {
+            if(confirm("以前のセーブデータは消えますが、よろしいですか？")) {
+                playerLevel = 1;
+                playerExp = 0;
+                comboCount = 0;
+                saveGame();
+            } else {
+                return;
+            }
+        } else {
+            loadGameData();
+        }
+
+        document.getElementById('title-screen').classList.add('hidden');
+        document.getElementById('main-content').classList.remove('hidden');
+        updateStatus();
+        loadFlashcard();
+    }
+
+
+    // --- データロード ---
     async function loadWordsData() {
         try {
-            // キャッシュ（古いデータ）を読み込まないように時間を付与
             const response = await fetch('words.json?' + new Date().getTime());
-            
-            if (!response.ok) {
-                throw new Error("HTTPエラー: " + response.status + " (ファイル名が間違っているか、アップロードされていません)");
-            }
-
+            if (!response.ok) throw new Error("HTTPエラー: " + response.status);
             const textData = await response.text();
-            
-            try {
-                words = JSON.parse(textData);
-            } catch (e) {
-                throw new Error("JSONの形式エラーです。変換ミスや、余計な文字が混ざっている可能性があります。<br>詳細: " + e.message);
-            }
+            words = JSON.parse(textData);
 
-            if (!Array.isArray(words)) {
-                throw new Error("JSONデータが配列（ [ で始まり ] で終わる形）ではありません。");
-            }
-            if (words.length < 4) {
-                throw new Error("クイズを作成するには、データが最低4つ必要です。現在: " + words.length + "個");
-            }
-
-            // 成功した場合
             document.getElementById('loading-view').classList.add('hidden');
-            document.getElementById('main-content').classList.remove('hidden');
-            loadFlashcard();
-            updateStatus();
+            
+            // セーブデータがあれば「続きから」を表示
+            document.getElementById('title-screen').classList.remove('hidden');
+            if (localStorage.getItem(SAVE_KEY)) {
+                document.getElementById('btn-continue').classList.remove('hidden');
+            }
 
         } catch (error) {
-            console.error('読み込み失敗:', error);
-            document.getElementById('loading-text').innerHTML = "<b>システムエラー発生</b><br>原因を特定しました：";
-            document.getElementById('loading-text').style.color = "#e74c3c";
-            document.getElementById('error-msg').innerHTML = error.message + "<br><br>※GitHubのファイル名が words.json (全て小文字) になっているか確認してください。";
+            document.getElementById('loading-text').innerHTML = "<b>通信エラー</b>";
+            document.getElementById('error-msg').innerHTML = error.message;
         }
+    }
+
+    // --- ゲームシステム ---
+    function getPlayerClass(lv) {
+        let currentTitle = titles[0].name;
+        for (let i = 0; i < titles.length; i++) {
+            if (lv >= titles[i].lv) currentTitle = titles[i].name;
+        }
+        return currentTitle;
     }
 
     function updateStatus() {
         document.getElementById('player-level').innerText = "LV " + playerLevel;
         document.getElementById('player-exp').innerText = "EXP " + playerExp + " / " + nextLevelExp;
+        document.getElementById('player-combo').innerText = comboCount + " 連撃中";
+        document.getElementById('player-class').innerText = "称号: " + getPlayerClass(playerLevel);
+        
+        if(comboCount > 0) {
+            document.getElementById('player-combo').style.color = "var(--romasaga-gold-light)";
+        } else {
+            document.getElementById('player-combo').style.color = "var(--romasaga-cyan)";
+        }
     }
 
-    function addExp(amount) {
-        playerExp += amount;
+    function addExp(baseAmount) {
+        // コンボボーナス (最大2倍まで)
+        let comboBonus = 1 + (Math.min(comboCount, 10) * 0.1); 
+        let finalAmount = Math.floor(baseAmount * comboBonus);
+
+        playerExp += finalAmount;
         if (playerExp >= nextLevelExp) {
             playerLevel++;
             playerExp -= nextLevelExp;
-            alert("レベルアップ！ 力がみなぎってきた！ LV " + playerLevel + " になりました！");
+            alert(`レベルアップ！ LV ${playerLevel} になった！\n称号が「${getPlayerClass(playerLevel)}」になったかもしれない！`);
         }
         updateStatus();
+        saveGame(); // 経験値が入るたびにオートセーブ
     }
 
+    function triggerHirameki(containerId) {
+        const container = document.getElementById(containerId);
+        const effect = document.createElement('div');
+        effect.className = 'hirameki-effect';
+        effect.innerText = '💡ピコーン！';
+        container.appendChild(effect);
+        
+        setTimeout(() => { effect.remove(); }, 1000);
+    }
+
+    // --- 共通機能 ---
     function getRandomIndex() { return Math.floor(Math.random() * words.length); }
 
     function switchMode(mode) {
@@ -234,7 +347,6 @@
         }
     }
 
-    // --- 空のデータを隠す便利機能 ---
     function setTextOrHide(elementId, boxId, text) {
         const el = document.getElementById(elementId);
         const box = document.getElementById(boxId);
@@ -246,6 +358,7 @@
         }
     }
 
+    // --- 単語カード ---
     function loadFlashcard() {
         if (words.length === 0) return;
         currentWordIndex = getRandomIndex();
@@ -259,16 +372,12 @@
         
         const exEl = document.getElementById('fc-example');
         if (wordData.example && wordData.example.trim() !== "") {
-            exEl.innerHTML = wordData.example;
-            exEl.style.display = "block";
+            exEl.innerHTML = wordData.example; exEl.style.display = "block";
             document.getElementById('box-fc-usage').style.display = "block";
         } else {
             exEl.style.display = "none";
         }
-        
-        if(!wordData.usage && !wordData.example) {
-            document.getElementById('box-fc-usage').style.display = "none";
-        }
+        if(!wordData.usage && !wordData.example) document.getElementById('box-fc-usage').style.display = "none";
         
         document.getElementById('fc-explanation').style.display = 'none';
     }
@@ -279,10 +388,11 @@
     }
 
     function nextFlashcard() { 
-        addExp(10); 
+        addExp(5); // カードをめくるだけでも少しEXP
         loadFlashcard(); 
     }
 
+    // --- 4択クイズ ---
     function loadQuiz() {
         if (words.length === 0) return;
         currentWordIndex = getRandomIndex();
@@ -295,7 +405,6 @@
 
         let options = [correctWord.ja || "意味不明"];
         let wrongOptions = words.filter((w, index) => index !== currentWordIndex);
-        
         wrongOptions.sort(() => Math.random() - 0.5);
         for(let i = 0; i < 3 && i < wrongOptions.length; i++) {
             options.push(wrongOptions[i].ja || "意味不明");
@@ -321,14 +430,24 @@
         const correctJa = correctWord.ja || "意味不明";
 
         if (selectedJa === correctJa) {
-            resultDiv.innerText = '見事、勝利！';
+            comboCount++; // 連撃アップ
             resultDiv.style.color = 'var(--romasaga-gold-light)'; 
             clickedBtn.style.borderColor = 'var(--romasaga-gold-light)';
             clickedBtn.style.color = 'var(--romasaga-gold-light)';
             clickedBtn.style.backgroundColor = 'rgba(218, 165, 32, 0.2)';
-            addExp(30);
+            
+            // 閃き判定 (20%の確率、または5コンボごとの確定)
+            if (Math.random() < 0.2 || comboCount % 5 === 0) {
+                triggerHirameki('quiz-word-container');
+                resultDiv.innerText = '見事、閃いた！(EXP 3倍)';
+                addExp(90); // 閃きクリティカル
+            } else {
+                resultDiv.innerText = '見事、勝利！';
+                addExp(30); // 通常正解
+            }
         } else {
-            resultDiv.innerText = '敗北...。次は負けん！';
+            comboCount = 0; // 連撃リセット
+            resultDiv.innerText = '敗北...。連撃が途切れた。';
             resultDiv.style.color = '#e74c3c';
             clickedBtn.style.borderColor = '#e74c3c';
             clickedBtn.style.color = '#e74c3c';
@@ -340,6 +459,8 @@
                     btn.style.color = 'var(--romasaga-gold-light)';
                 }
             });
+            saveGame(); // 間違えた時もコンボリセットをセーブ
+            updateStatus();
         }
 
         document.getElementById('quiz-meaning').innerText = correctJa;
@@ -348,16 +469,12 @@
         
         const exEl = document.getElementById('quiz-example');
         if (correctWord.example && correctWord.example.trim() !== "") {
-            exEl.innerHTML = correctWord.example;
-            exEl.style.display = "block";
+            exEl.innerHTML = correctWord.example; exEl.style.display = "block";
             document.getElementById('box-quiz-usage').style.display = "block";
         } else {
             exEl.style.display = "none";
         }
-        
-        if(!correctWord.usage && !correctWord.example) {
-            document.getElementById('box-quiz-usage').style.display = "none";
-        }
+        if(!correctWord.usage && !correctWord.example) document.getElementById('box-quiz-usage').style.display = "none";
 
         document.getElementById('quiz-explanation-box').style.display = 'block';
         document.getElementById('btn-next-quiz').classList.remove('hidden');
