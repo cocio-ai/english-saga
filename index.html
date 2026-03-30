@@ -8,18 +8,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=PixelMplus10&display=swap" rel="stylesheet">
     <style>
-        /* ロマサガ風スタイル */
         :root {
             --romasaga-blue-dark: #000033;
             --romasaga-blue-light: #000080;
-            --romasaga-gold: #daa520; /* 金色 */
-            --romasaga-gold-light: #f1c40f; /* 鮮やかな金色 */
-            --romasaga-cyan: #87ceeb; /* 水色（解説用） */
+            --romasaga-gold: #daa520;
+            --romasaga-gold-light: #f1c40f;
+            --romasaga-cyan: #87ceeb;
             --romasaga-border-width: 2px;
-            
-            /* フォント設定 */
-            --font-main: 'PixelMplus10', sans-serif; /* 日本語 */
-            --font-word: 'DotGothic16', sans-serif; /* 英単語 */
+            --font-main: 'PixelMplus10', sans-serif;
+            --font-word: 'DotGothic16', sans-serif;
         }
 
         body {
@@ -29,170 +26,81 @@
             text-align: center;
             margin: 0;
             padding: 10px;
-            image-rendering: pixelated; /* ドット絵をくっきり表示 */
+            image-rendering: pixelated;
         }
         
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-        }
+        .container { max-width: 600px; margin: 0 auto; }
         
-        /* ロマサガ風ウィンドウ（多重枠） */
         .window {
             background-color: var(--romasaga-blue-dark);
-            border: var(--romasaga-border-width) solid #fff; /* 白の内枠 */
+            border: var(--romasaga-border-width) solid #fff;
             box-shadow: 0 0 0 2px #000, 0 0 0 4px var(--romasaga-gold), inset 0 0 10px rgba(255, 255, 255, 0.2);
-            padding: 15px;
-            margin-bottom: 15px;
-            text-align: left;
-            position: relative;
+            padding: 15px; margin-bottom: 15px; text-align: left; position: relative;
         }
 
-        /* ステータスバー（画面上部） */
         .status-bar {
-            font-family: var(--font-word); /* ステータスは英語風フォント */
-            display: flex;
-            justify-content: space-between;
-            font-weight: bold;
-            font-size: 16px;
-            letter-spacing: 2px;
-            padding: 10px 15px;
+            font-family: var(--font-word);
+            display: flex; justify-content: space-between;
+            font-weight: bold; font-size: 16px; letter-spacing: 2px; padding: 10px 15px;
         }
 
-        /* コマンドメニュー（タブ） */
-        .menu-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
+        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .cmd-btn {
-            background: transparent;
-            color: #fff;
-            border: none;
-            font-family: var(--font-main);
-            font-size: 18px;
-            text-align: left;
-            cursor: pointer;
-            padding: 10px;
-            position: relative;
+            background: transparent; color: #fff; border: none; font-family: var(--font-main);
+            font-size: 18px; text-align: left; cursor: pointer; padding: 10px; position: relative;
         }
-        .cmd-btn:hover, .cmd-btn.active {
-            color: var(--romasaga-gold-light);
-            text-shadow: 0 0 5px #fff;
-        }
-        .cmd-btn.active::before {
-            content: "▶ ";
-            position: absolute;
-            left: -10px;
-            animation: blink 1s infinite;
-        }
+        .cmd-btn:hover, .cmd-btn.active { color: var(--romasaga-gold-light); text-shadow: 0 0 5px #fff; }
+        .cmd-btn.active::before { content: "▶ "; position: absolute; left: -10px; animation: blink 1s infinite; }
         @keyframes blink { 50% { opacity: 0; } }
 
-        /* 英単語表示（戦闘画面の敵の名前風） */
         .word-title {
-            font-family: var(--font-word);
-            font-size: 36px;
-            font-weight: bold;
-            text-align: center;
-            margin: 20px 0;
-            color: var(--romasaga-gold-light);
-            letter-spacing: 1px;
-            text-shadow: 2px 2px 0 #000;
+            font-family: var(--font-word); font-size: 36px; font-weight: bold; text-align: center;
+            margin: 20px 0; color: var(--romasaga-gold-light); letter-spacing: 1px; text-shadow: 2px 2px 0 #000;
         }
         
-        /* 詳細解説エリア */
-        .explanation {
-            display: none;
-            margin-top: 15px;
-        }
+        .explanation { display: none; margin-top: 15px; }
         .meaning-main {
-            font-size: 24px;
-            color: #fff;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 20px;
-            border-bottom: 1px dashed var(--romasaga-gold);
-            padding-bottom: 10px;
+            font-size: 24px; color: #fff; font-weight: bold; text-align: center;
+            margin-bottom: 20px; border-bottom: 1px dashed var(--romasaga-gold); padding-bottom: 10px;
         }
         .detail-section {
-            background: rgba(0, 0, 0, 0.4);
-            padding: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 4px;
-            margin-bottom: 10px;
-            font-size: 14px;
-            line-height: 1.6;
+            background: rgba(0, 0, 0, 0.4); padding: 10px; border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 4px; margin-bottom: 10px; font-size: 14px; line-height: 1.6;
         }
-        .section-title {
-            color: var(--romasaga-cyan); /* ロマサガの解説文でよく使われる水色 */
-            font-weight: bold;
-            margin-bottom: 5px;
-            font-size: 15px;
-        }
-        .example-text {
-            color: #bdc3c7;
-            font-style: italic;
-        }
+        .section-title { color: var(--romasaga-cyan); font-weight: bold; margin-bottom: 5px; font-size: 15px; }
+        .example-text { color: #bdc3c7; font-style: italic; }
 
-        /* クイズの選択肢（コマンドメニュー風） */
         .quiz-option {
-            display: block;
-            width: 100%;
-            background: transparent;
-            color: #fff;
-            border: 2px solid #fff;
-            padding: 12px;
-            margin-bottom: 8px;
-            font-family: var(--font-main);
-            font-size: 16px;
-            cursor: pointer;
-            text-align: left;
-            transition: 0.2s;
-            position: relative;
+            display: block; width: 100%; background: transparent; color: #fff; border: 2px solid #fff;
+            padding: 12px; margin-bottom: 8px; font-family: var(--font-main); font-size: 16px;
+            cursor: pointer; text-align: left; transition: 0.2s;
         }
-        .quiz-option:hover {
-            border-color: var(--romasaga-gold-light);
-            color: var(--romasaga-gold-light);
-            background: rgba(255, 255, 255, 0.1);
-        }
+        .quiz-option:hover { border-color: var(--romasaga-gold-light); color: var(--romasaga-gold-light); background: rgba(255, 255, 255, 0.1); }
         .quiz-option:disabled { cursor: not-allowed; }
 
-        /* 汎用アクションボタン（「決定」ボタン風） */
         .action-btn {
-            background: #fff;
-            color: #000;
-            border: 2px solid #aaa;
-            padding: 10px 20px;
-            font-family: var(--font-main);
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 10px;
+            background: #fff; color: #000; border: 2px solid #aaa; padding: 10px 20px;
+            font-family: var(--font-main); font-size: 16px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 10px;
         }
         .action-btn:hover { background: #ddd; }
         
-        /* 結果表示 */
-        #quiz-result {
-            font-family: var(--font-main);
-            text-align: center;
-            font-size: 28px;
-            font-weight: bold;
-            margin: 15px 0;
-            text-shadow: 2px 2px 0 #000;
-        }
-        
+        #quiz-result { font-family: var(--font-main); text-align: center; font-size: 28px; font-weight: bold; margin: 15px 0; text-shadow: 2px 2px 0 #000; }
         .hidden { display: none !important; }
+        
         #loading-view {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; color: #fff; display: flex; justify-content: center;
-            align-items: center; font-size: 24px; z-index: 1000;
+            background: #000; color: #fff; display: flex; flex-direction: column; justify-content: center;
+            align-items: center; font-size: 20px; z-index: 1000; padding: 20px; box-sizing: border-box; text-align: center; line-height: 1.5;
         }
+        #error-msg { color: #e74c3c; font-size: 16px; margin-top: 20px; word-break: break-all; }
     </style>
 </head>
 <body>
 
-<div id="loading-view">データをロード中...</div>
+<div id="loading-view">
+    <div id="loading-text">魔導書（データ）を解析中...</div>
+    <div id="error-msg"></div>
+</div>
 
 <div class="container hidden" id="main-content">
     <div class="window status-bar">
@@ -211,16 +119,14 @@
         
         <div id="fc-explanation" class="explanation">
             <div id="fc-meaning" class="meaning-main">Meaning</div>
-            
-            <div class="detail-section">
+            <div class="detail-section" id="box-fc-detail">
                 <div class="section-title">【解説・ニュアンス】</div>
-                <div id="fc-detail">Detail text</div>
+                <div id="fc-detail"></div>
             </div>
-            
-            <div class="detail-section">
+            <div class="detail-section" id="box-fc-usage">
                 <div class="section-title">【構文・例文】</div>
-                <div id="fc-usage" style="margin-bottom: 5px; font-weight: bold; color: #fff;">Usage</div>
-                <div id="fc-example" class="example-text">Example</div>
+                <div id="fc-usage" style="margin-bottom: 5px; font-weight: bold; color: #fff;"></div>
+                <div id="fc-example" class="example-text"></div>
             </div>
         </div>
         <button class="action-btn" onclick="nextFlashcard()">次のターゲットへ</button>
@@ -231,16 +137,16 @@
         <div id="quiz-options"></div>
         <div id="quiz-result"></div>
         
-        <div id="quiz-explanation-box" class="explanation" style="display: none; border: none; padding-top: 0;">
+        <div id="quiz-explanation-box" class="explanation" style="border: none; padding-top: 0;">
             <div id="quiz-meaning" class="meaning-main">Meaning</div>
-            <div class="detail-section">
+            <div class="detail-section" id="box-quiz-detail">
                 <div class="section-title">【解説・ニュアンス】</div>
-                <div id="quiz-detail">Detail</div>
+                <div id="quiz-detail"></div>
             </div>
-            <div class="detail-section">
+            <div class="detail-section" id="box-quiz-usage">
                 <div class="section-title">【構文・例文】</div>
-                <div id="quiz-usage" style="margin-bottom: 5px; font-weight: bold; color: #fff;">Usage</div>
-                <div id="quiz-example" class="example-text">Example</div>
+                <div id="quiz-usage" style="margin-bottom: 5px; font-weight: bold; color: #fff;"></div>
+                <div id="quiz-example" class="example-text"></div>
             </div>
         </div>
 
@@ -249,37 +155,51 @@
 </div>
 
 <script>
-    // --- グローバル変数 ---
-    let words = []; // 単語データ（JSONからロード）
+    let words = []; 
     let currentWordIndex = 0;
     let playerExp = 0;
     let playerLevel = 1;
-    const nextLevelExp = 711; // ロマサガ1の最大HPリスペクト
+    const nextLevelExp = 711;
 
-    // --- データロード機能 ---
+    // --- エラー解析機能付きのデータロード ---
     async function loadWordsData() {
         try {
-            const response = await fetch('words.json'); // words.jsonファイルをフェッチ
-            if (!response.ok) throw new Error('ネットワーク応答が正常ではありません');
-            words = await response.json(); // JSONとして解析
+            // キャッシュ（古いデータ）を読み込まないように時間を付与
+            const response = await fetch('words.json?' + new Date().getTime());
             
-            if (words.length < 4) {
-                alert("エラー：クイズを作成するには、words.jsonに少なくとも4つの単語が必要です。");
-                return;
+            if (!response.ok) {
+                throw new Error("HTTPエラー: " + response.status + " (ファイル名が間違っているか、アップロードされていません)");
             }
 
-            // ロード完了後の初期化
+            const textData = await response.text();
+            
+            try {
+                words = JSON.parse(textData);
+            } catch (e) {
+                throw new Error("JSONの形式エラーです。変換ミスや、余計な文字が混ざっている可能性があります。<br>詳細: " + e.message);
+            }
+
+            if (!Array.isArray(words)) {
+                throw new Error("JSONデータが配列（ [ で始まり ] で終わる形）ではありません。");
+            }
+            if (words.length < 4) {
+                throw new Error("クイズを作成するには、データが最低4つ必要です。現在: " + words.length + "個");
+            }
+
+            // 成功した場合
             document.getElementById('loading-view').classList.add('hidden');
             document.getElementById('main-content').classList.remove('hidden');
             loadFlashcard();
             updateStatus();
+
         } catch (error) {
-            console.error('データの読み込みに失敗しました:', error);
-            document.getElementById('loading-view').innerText = "エラー: words.json が見つからないか、形式が正しくありません。";
+            console.error('読み込み失敗:', error);
+            document.getElementById('loading-text').innerHTML = "<b>システムエラー発生</b><br>原因を特定しました：";
+            document.getElementById('loading-text').style.color = "#e74c3c";
+            document.getElementById('error-msg').innerHTML = error.message + "<br><br>※GitHubのファイル名が words.json (全て小文字) になっているか確認してください。";
         }
     }
 
-    // --- ゲームシステム ---
     function updateStatus() {
         document.getElementById('player-level').innerText = "LV " + playerLevel;
         document.getElementById('player-exp').innerText = "EXP " + playerExp + " / " + nextLevelExp;
@@ -289,13 +209,12 @@
         playerExp += amount;
         if (playerExp >= nextLevelExp) {
             playerLevel++;
-            playerExp = playerExp - nextLevelExp;
+            playerExp -= nextLevelExp;
             alert("レベルアップ！ 力がみなぎってきた！ LV " + playerLevel + " になりました！");
         }
         updateStatus();
     }
 
-    // --- 共通機能 ---
     function getRandomIndex() { return Math.floor(Math.random() * words.length); }
 
     function switchMode(mode) {
@@ -315,19 +234,43 @@
         }
     }
 
-    // --- 単語カード機能 ---
+    // --- 空のデータを隠す便利機能 ---
+    function setTextOrHide(elementId, boxId, text) {
+        const el = document.getElementById(elementId);
+        const box = document.getElementById(boxId);
+        if (text && text.trim() !== "") {
+            el.innerHTML = text;
+            box.style.display = "block";
+        } else {
+            box.style.display = "none";
+        }
+    }
+
     function loadFlashcard() {
         if (words.length === 0) return;
         currentWordIndex = getRandomIndex();
         const wordData = words[currentWordIndex];
         
-        document.getElementById('fc-word').innerText = wordData.en;
-        document.getElementById('fc-meaning').innerText = wordData.ja;
-        document.getElementById('fc-detail').innerHTML = wordData.detail;
-        document.getElementById('fc-usage').innerText = wordData.usage;
-        document.getElementById('fc-example').innerHTML = wordData.example;
+        document.getElementById('fc-word').innerText = wordData.en || "N/A";
+        document.getElementById('fc-meaning').innerText = wordData.ja || "意味不明";
         
-        document.getElementById('fc-explanation').style.display = 'none'; // 裏面を隠す
+        setTextOrHide('fc-detail', 'box-fc-detail', wordData.detail);
+        setTextOrHide('fc-usage', 'box-fc-usage', wordData.usage);
+        
+        const exEl = document.getElementById('fc-example');
+        if (wordData.example && wordData.example.trim() !== "") {
+            exEl.innerHTML = wordData.example;
+            exEl.style.display = "block";
+            document.getElementById('box-fc-usage').style.display = "block";
+        } else {
+            exEl.style.display = "none";
+        }
+        
+        if(!wordData.usage && !wordData.example) {
+            document.getElementById('box-fc-usage').style.display = "none";
+        }
+        
+        document.getElementById('fc-explanation').style.display = 'none';
     }
 
     function flipCard() {
@@ -336,28 +279,26 @@
     }
 
     function nextFlashcard() { 
-        addExp(10); // カードを解析して次へ行くたびに経験値付与
+        addExp(10); 
         loadFlashcard(); 
     }
 
-    // --- 4択クイズ機能 ---
     function loadQuiz() {
         if (words.length === 0) return;
         currentWordIndex = getRandomIndex();
         const correctWord = words[currentWordIndex];
         
-        document.getElementById('quiz-word').innerText = correctWord.en;
+        document.getElementById('quiz-word').innerText = correctWord.en || "N/A";
         document.getElementById('quiz-result').innerText = '';
-        document.getElementById('quiz-result').style.color = '#fff';
         document.getElementById('btn-next-quiz').classList.add('hidden');
         document.getElementById('quiz-explanation-box').style.display = 'none';
 
-        let options = [correctWord.ja];
+        let options = [correctWord.ja || "意味不明"];
         let wrongOptions = words.filter((w, index) => index !== currentWordIndex);
         
         wrongOptions.sort(() => Math.random() - 0.5);
         for(let i = 0; i < 3 && i < wrongOptions.length; i++) {
-            options.push(wrongOptions[i].ja);
+            options.push(wrongOptions[i].ja || "意味不明");
         }
         options.sort(() => Math.random() - 0.5);
 
@@ -377,42 +318,53 @@
         const allBtns = document.querySelectorAll('.quiz-option');
         allBtns.forEach(btn => btn.disabled = true);
 
-        if (selectedJa === correctWord.ja) {
+        const correctJa = correctWord.ja || "意味不明";
+
+        if (selectedJa === correctJa) {
             resultDiv.innerText = '見事、勝利！';
-            resultDiv.style.color = var(--romasaga-gold-light); 
+            resultDiv.style.color = 'var(--romasaga-gold-light)'; 
             clickedBtn.style.borderColor = 'var(--romasaga-gold-light)';
             clickedBtn.style.color = 'var(--romasaga-gold-light)';
-            clickedBtn.style.backgroundColor = 'rgba(218, 165, 32, 0.2)'; // 薄い金色 backgrounds
-            addExp(30); // 勝利で多めに経験値付与
+            clickedBtn.style.backgroundColor = 'rgba(218, 165, 32, 0.2)';
+            addExp(30);
         } else {
             resultDiv.innerText = '敗北...。次は負けん！';
-            resultDiv.style.color = '#e74c3c'; // 赤
+            resultDiv.style.color = '#e74c3c';
             clickedBtn.style.borderColor = '#e74c3c';
             clickedBtn.style.color = '#e74c3c';
             clickedBtn.style.backgroundColor = 'rgba(231, 76, 60, 0.2)';
             
-            // 正解のボタンを金色にする
             allBtns.forEach(btn => {
-                if(btn.innerText === "▶ " + correctWord.ja) {
+                if(btn.innerText === "▶ " + correctJa) {
                     btn.style.borderColor = 'var(--romasaga-gold-light)';
                     btn.style.color = 'var(--romasaga-gold-light)';
                 }
             });
         }
 
-        // 解析情報を表示（クイズ用）
-        document.getElementById('quiz-meaning').innerText = correctWord.ja;
-        document.getElementById('quiz-detail').innerHTML = correctWord.detail;
-        document.getElementById('quiz-usage').innerText = correctWord.usage;
-        document.getElementById('quiz-example').innerHTML = correctWord.example;
-        document.getElementById('quiz-explanation-box').style.display = 'block';
+        document.getElementById('quiz-meaning').innerText = correctJa;
+        setTextOrHide('quiz-detail', 'box-quiz-detail', correctWord.detail);
+        setTextOrHide('quiz-usage', 'box-quiz-usage', correctWord.usage);
+        
+        const exEl = document.getElementById('quiz-example');
+        if (correctWord.example && correctWord.example.trim() !== "") {
+            exEl.innerHTML = correctWord.example;
+            exEl.style.display = "block";
+            document.getElementById('box-quiz-usage').style.display = "block";
+        } else {
+            exEl.style.display = "none";
+        }
+        
+        if(!correctWord.usage && !correctWord.example) {
+            document.getElementById('box-quiz-usage').style.display = "none";
+        }
 
+        document.getElementById('quiz-explanation-box').style.display = 'block';
         document.getElementById('btn-next-quiz').classList.remove('hidden');
     }
 
     function nextQuiz() { loadQuiz(); }
 
-    // 初期化：データをロード
     window.onload = loadWordsData;
 </script>
 
