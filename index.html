@@ -116,11 +116,13 @@
 </head>
 <body>
 
+<!-- ローディング画面 -->
 <div id="loading-view">
     <div id="loading-text">魔導書を読み込み中...</div>
     <div id="error-msg"></div>
 </div>
 
+<!-- タイトル画面 -->
 <div id="title-screen" class="hidden">
     <div class="game-title">英単語サ・ガ<br><span style="font-size: 24px;">〜大学入試編〜</span></div>
     <div class="window title-menu">
@@ -129,6 +131,7 @@
     </div>
 </div>
 
+<!-- メインゲーム画面 -->
 <div class="container hidden" id="main-content">
     <div class="window status-bar">
         <div class="status-top">
@@ -136,7 +139,7 @@
             <div id="player-exp">EXP 0 / 711</div>
         </div>
         <div class="status-bottom">
-            <div id="player-class">クラス: 見習い兵</div>
+            <div id="player-class">称号: 見習い兵</div>
             <div id="player-combo">0 連撃</div>
         </div>
     </div>
@@ -146,6 +149,7 @@
         <button id="tab-quiz" class="cmd-btn" onclick="switchMode('quiz')">４択クイズ</button>
     </div>
 
+    <!-- 単語カードエリア -->
     <div id="flashcard-area" class="window">
         <p style="text-align: center; font-size: 12px; color: #aaa; margin: 0;">▼ タップして情報を解析</p>
         <div id="fc-word-container" style="position: relative;">
@@ -167,6 +171,7 @@
         <button class="action-btn" onclick="nextFlashcard()">次のターゲットへ</button>
     </div>
 
+    <!-- 4択クイズエリア -->
     <div id="quiz-area" class="window hidden">
         <div id="quiz-word-container" style="position: relative;">
             <div id="quiz-word" class="word-title">Word</div>
@@ -201,15 +206,38 @@
     let comboCount = 0;
     const nextLevelExp = 711;
 
-    // 称号リスト
+    // 称号リスト（全31種類）
     const titles = [
         { lv: 1, name: "見習い兵" },
-        { lv: 5, name: "帝国軽歩兵" },
-        { lv: 10, name: "帝国猟兵" },
-        { lv: 15, name: "フリーメイジ" },
-        { lv: 20, name: "インペリアルガード" },
-        { lv: 30, name: "ホーリーオーダー" },
-        { lv: 50, name: "皇帝" },
+        { lv: 2, name: "帝国軽歩兵" },
+        { lv: 3, name: "帝国重装歩兵" },
+        { lv: 4, name: "帝国猟兵" },
+        { lv: 5, name: "宮廷魔術師" },
+        { lv: 6, name: "フリーファイター" },
+        { lv: 7, name: "フリーメイジ" },
+        { lv: 8, name: "シティシーフ" },
+        { lv: 9, name: "サイゴ族" },
+        { lv: 10, name: "格闘家" },
+        { lv: 11, name: "武装商船団" },
+        { lv: 12, name: "ノーマッド" },
+        { lv: 13, name: "デザートガード" },
+        { lv: 14, name: "アマゾネス" },
+        { lv: 15, name: "海女" },
+        { lv: 16, name: "ホーリーオーダー" },
+        { lv: 18, name: "サラマンダー" },
+        { lv: 20, name: "モール" },
+        { lv: 22, name: "ネレイド" },
+        { lv: 24, name: "イーリス" },
+        { lv: 26, name: "陰陽師" },
+        { lv: 28, name: "忍者" },
+        { lv: 30, name: "イーストガード" },
+        { lv: 35, name: "インペリアルガード" },
+        { lv: 40, name: "帝国将軍" },
+        { lv: 50, name: "伝説の英雄" },
+        { lv: 60, name: "七英雄の好敵手" },
+        { lv: 70, name: "皇帝" },
+        { lv: 80, name: "真・皇帝" },
+        { lv: 90, name: "アバロンの導き手" },
         { lv: 99, name: "最終皇帝" }
     ];
 
@@ -232,9 +260,9 @@
             playerLevel = data.level || 1;
             playerExp = data.exp || 0;
             comboCount = data.combo || 0;
-            return true; // セーブデータあり
+            return true;
         }
-        return false; // セーブデータなし
+        return false;
     }
 
     function startGame(isNewGame) {
@@ -257,7 +285,6 @@
         loadFlashcard();
     }
 
-
     // --- データロード ---
     async function loadWordsData() {
         try {
@@ -268,7 +295,6 @@
 
             document.getElementById('loading-view').classList.add('hidden');
             
-            // セーブデータがあれば「続きから」を表示
             document.getElementById('title-screen').classList.remove('hidden');
             if (localStorage.getItem(SAVE_KEY)) {
                 document.getElementById('btn-continue').classList.remove('hidden');
@@ -303,18 +329,26 @@
     }
 
     function addExp(baseAmount) {
-        // コンボボーナス (最大2倍まで)
         let comboBonus = 1 + (Math.min(comboCount, 10) * 0.1); 
         let finalAmount = Math.floor(baseAmount * comboBonus);
+        
+        let oldClass = getPlayerClass(playerLevel);
 
         playerExp += finalAmount;
         if (playerExp >= nextLevelExp) {
             playerLevel++;
             playerExp -= nextLevelExp;
-            alert(`レベルアップ！ LV ${playerLevel} になった！\n称号が「${getPlayerClass(playerLevel)}」になったかもしれない！`);
+            
+            let newClass = getPlayerClass(playerLevel);
+            
+            if (oldClass !== newClass) {
+                alert(`レベルアップ！ LV ${playerLevel} になった！\nなんと「${newClass}」にクラスチェンジした！`);
+            } else {
+                alert(`レベルアップ！ LV ${playerLevel} になった！`);
+            }
         }
         updateStatus();
-        saveGame(); // 経験値が入るたびにオートセーブ
+        saveGame();
     }
 
     function triggerHirameki(containerId) {
@@ -388,7 +422,7 @@
     }
 
     function nextFlashcard() { 
-        addExp(5); // カードをめくるだけでも少しEXP
+        addExp(5);
         loadFlashcard(); 
     }
 
@@ -430,23 +464,22 @@
         const correctJa = correctWord.ja || "意味不明";
 
         if (selectedJa === correctJa) {
-            comboCount++; // 連撃アップ
+            comboCount++;
             resultDiv.style.color = 'var(--romasaga-gold-light)'; 
             clickedBtn.style.borderColor = 'var(--romasaga-gold-light)';
             clickedBtn.style.color = 'var(--romasaga-gold-light)';
             clickedBtn.style.backgroundColor = 'rgba(218, 165, 32, 0.2)';
             
-            // 閃き判定 (20%の確率、または5コンボごとの確定)
             if (Math.random() < 0.2 || comboCount % 5 === 0) {
                 triggerHirameki('quiz-word-container');
                 resultDiv.innerText = '見事、閃いた！(EXP 3倍)';
-                addExp(90); // 閃きクリティカル
+                addExp(90);
             } else {
                 resultDiv.innerText = '見事、勝利！';
-                addExp(30); // 通常正解
+                addExp(30);
             }
         } else {
-            comboCount = 0; // 連撃リセット
+            comboCount = 0;
             resultDiv.innerText = '敗北...。連撃が途切れた。';
             resultDiv.style.color = '#e74c3c';
             clickedBtn.style.borderColor = '#e74c3c';
@@ -459,7 +492,7 @@
                     btn.style.color = 'var(--romasaga-gold-light)';
                 }
             });
-            saveGame(); // 間違えた時もコンボリセットをセーブ
+            saveGame();
             updateStatus();
         }
 
