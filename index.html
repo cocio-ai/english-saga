@@ -33,7 +33,7 @@
         
         .container { max-width: 600px; margin: 0 auto; }
         
-        /* ▼▼▼ 絶対に潰れない極太の多重枠ウィンドウ ▼▼▼ */
+        /* ▼▼▼ ロマサガ完全再現の極太多重枠ウィンドウ ▼▼▼ */
         .window {
             background-color: var(--romasaga-blue-dark);
             border: 3px solid #fff; /* 1層目：内側の白い太線 */
@@ -41,9 +41,14 @@
                 0 0 0 3px #000, /* 2層目：間の黒い太線 */
                 0 0 0 6px #fff; /* 3層目：外側の白い太線 */
             padding: 20px; 
-            margin: 20px 10px 30px 10px; /* 外側の枠が切れないように余白を確保 */
+            margin: 15px 8px 25px 8px; /* 外側の枠が切れないように余白を確保 */
             text-align: left; position: relative;
         }
+
+        /* モード説明ヘッダー（分かりやすさ改善） */
+        .mode-header { border-bottom: 2px dashed #555; margin-bottom: 15px; padding-bottom: 10px; }
+        .mode-title-text { color: var(--romasaga-gold-light); font-size: 22px; margin-bottom: 5px; font-weight: bold; }
+        .mode-desc-text { color: #ccc; font-size: 13px; line-height: 1.4; }
 
         #title-screen { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 80vh; }
         .game-title { font-family: var(--font-main); font-size: 44px; color: var(--romasaga-gold-light); text-shadow: 3px 3px 0 #000, 0 0 10px rgba(241,196,15,0.5); margin-bottom: 50px; text-align: center; }
@@ -54,8 +59,8 @@
         .status-top { display: flex; justify-content: space-between; margin-bottom: 5px; }
         .status-bottom { display: flex; justify-content: space-between; color: var(--romasaga-cyan); font-size: 14px; }
 
-        /* タブメニュー */
-        .menu-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 8px; padding: 15px 10px; margin-bottom: 25px; }
+        /* タブメニュー（名称変更） */
+        .menu-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 8px; padding: 15px 10px; margin-bottom: 20px; }
         .cmd-btn {
             background: rgba(0,0,51,0.8); color: #fff; border: 2px solid #555; font-family: var(--font-main);
             font-size: 15px; text-align: center; cursor: pointer; padding: 10px 2px; position: relative;
@@ -70,7 +75,7 @@
         @keyframes popup { 0% { top: 0px; opacity: 1; transform: translateX(-50%) scale(1); } 50% { transform: translateX(-50%) scale(1.5); } 100% { top: -40px; opacity: 0; transform: translateX(-50%) scale(1); } }
         @keyframes blink { 50% { opacity: 0; } }
 
-        .word-title { font-size: 40px; font-weight: bold; text-align: center; margin: 20px 0; color: var(--romasaga-gold-light); letter-spacing: 2px; }
+        .word-title { font-size: 40px; font-weight: bold; text-align: center; margin: 10px 0 20px 0; color: var(--romasaga-gold-light); letter-spacing: 2px; }
         
         .explanation { display: none; margin-top: 15px; }
         .meaning-main { font-size: 22px; color: #fff; font-weight: bold; text-align: center; margin-bottom: 20px; border-bottom: 2px dashed #fff; padding-bottom: 10px; }
@@ -78,12 +83,12 @@
         .section-title { color: var(--romasaga-cyan); margin-bottom: 5px; font-size: 15px; }
         .example-text { color: #bdc3c7; }
 
-        /* ▼▼▼ クイズ選択肢の改修（フォント小さめ＆ロマサガ枠） ▼▼▼ */
+        /* ▼▼▼ クイズ選択肢（フォント小さめ＆ロマサガ枠） ▼▼▼ */
         .quiz-option { 
             display: block; width: 100%; background: #000033; color: #fff; 
-            border: 2px solid #fff; box-shadow: 0 0 0 2px #000; /* ボタン自体も枠付きに */
-            padding: 12px 10px 12px 30px; margin-bottom: 15px; 
-            font-family: var(--font-main); font-size: 14px; /* ご要望通り文字を小さく */
+            border: 2px solid #fff; box-shadow: 0 0 0 2px #000; 
+            padding: 12px 10px 12px 30px; margin-bottom: 12px; 
+            font-family: var(--font-main); font-size: 14px; /* 文字を小さく調整 */
             cursor: pointer; text-align: left; transition: 0.2s; position: relative;
         }
         .quiz-option::before { content: ""; position: absolute; left: 8px; top: 12px; }
@@ -93,14 +98,13 @@
         .quiz-option.correct { border-color: var(--romasaga-gold-light); color: var(--romasaga-gold-light); }
         .quiz-option.wrong { border-color: #e74c3c; color: #e74c3c; text-decoration: line-through; opacity: 0.7; }
 
-        /* 次へ進むなどのアクションボタン */
-        .action-btn { background: #fff; color: #000; border: 2px solid #000; box-shadow: 0 0 0 2px #fff; padding: 12px 20px; font-family: var(--font-main); font-size: 16px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; margin-bottom: 10px; }
+        .action-btn { background: #fff; color: #000; border: 2px solid #000; box-shadow: 0 0 0 2px #fff; padding: 12px 20px; font-family: var(--font-main); font-size: 16px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; margin-bottom: 10px; text-shadow: none; }
         .action-btn:hover { background: #ddd; }
         
         #quiz-result { text-align: center; font-size: 24px; font-weight: bold; margin: 15px 0; }
         .dungeon-progress { text-align: center; color: var(--romasaga-cyan); margin-bottom: 10px; font-size: 16px; border-bottom: 1px solid #555; padding-bottom: 10px; }
         
-        /* ▼▼▼ ダンジョン選択画面をリストUI風に ▼▼▼ */
+        /* ダンジョン選択画面リスト */
         .dungeon-select-btn { 
             color: #fff; background: transparent; padding: 15px 10px; font-family: var(--font-main); 
             font-size: 18px; cursor: pointer; border-bottom: 1px dashed #555; transition: 0.2s; position: relative; padding-left: 35px;
@@ -146,74 +150,73 @@
     </div>
 
     <div class="menu-grid">
-        <button id="tab-flashcard" class="cmd-btn active" onclick="switchMode('flashcard')">単語帳</button>
+        <button id="tab-flashcard" class="cmd-btn active" onclick="switchMode('flashcard')">スキル</button>
         <button id="tab-quiz" class="cmd-btn" onclick="switchMode('quiz')">特訓</button>
         <button id="tab-dungeon" class="cmd-btn" onclick="switchMode('dungeon-select')">討伐</button>
         <button id="tab-record" class="cmd-btn" onclick="switchMode('record')">記録</button>
     </div>
 
-    <!-- 1. 単語カードエリア -->
-    <div id="flashcard-area" class="window">
-        <p style="text-align: center; font-size: 12px; color: #aaa; margin: 0;">▼ タップして情報を解析</p>
-        <div id="fc-word-container" style="position: relative;">
-            <div id="fc-word" class="word-title" onclick="flipCard()" style="cursor: pointer;">Word</div>
+    <div class="window">
+        <div class="mode-header">
+            <div id="ui-mode-title" class="mode-title-text">スキル習得</div>
+            <div id="ui-mode-desc" class="mode-desc-text">単語をタップして情報を解析し、知識をインプットせよ。</div>
         </div>
-        <div id="fc-explanation" class="explanation">
-            <div id="fc-meaning" class="meaning-main">Meaning</div>
-            <div class="detail-section" id="box-fc-detail"><div class="section-title">【解説・ニュアンス】</div><div id="fc-detail"></div></div>
-            <div class="detail-section" id="box-fc-usage"><div class="section-title">【構文・例文】</div><div id="fc-usage" style="margin-bottom: 5px; color: #fff;"></div><div id="fc-example" class="example-text"></div></div>
-        </div>
-        <button class="action-btn" onclick="nextFlashcard()">次のターゲットへ</button>
-    </div>
 
-    <!-- 2. 4択クイズ ＆ 3. ダンジョンクイズ エリア -->
-    <div id="quiz-area" class="window hidden">
-        <div id="dungeon-progress" class="dungeon-progress hidden">第 1 階層 / 全 20 階層</div>
-        <div id="quiz-word-container" style="position: relative;">
-            <div id="quiz-word" class="word-title">Word</div>
+        <div id="flashcard-area">
+            <p style="text-align: center; font-size: 12px; color: #aaa; margin: 0;">▼ タップして情報を解析</p>
+            <div id="fc-word-container" style="position: relative;">
+                <div id="fc-word" class="word-title" onclick="flipCard()" style="cursor: pointer;">Word</div>
+            </div>
+            <div id="fc-explanation" class="explanation">
+                <div id="fc-meaning" class="meaning-main">Meaning</div>
+                <div class="detail-section" id="box-fc-detail"><div class="section-title">【解説・ニュアンス】</div><div id="fc-detail"></div></div>
+                <div class="detail-section" id="box-fc-usage"><div class="section-title">【構文・例文】</div><div id="fc-usage" style="margin-bottom: 5px; color: #fff;"></div><div id="fc-example" class="example-text"></div></div>
+            </div>
+            <button class="action-btn" onclick="nextFlashcard()">次のターゲットへ</button>
         </div>
-        <div id="quiz-options"></div>
-        <div id="quiz-result"></div>
-        
-        <div id="quiz-explanation-box" class="explanation" style="border: none; padding-top: 0;">
-            <div id="quiz-meaning" class="meaning-main">Meaning</div>
-            <div class="detail-section" id="box-quiz-detail"><div class="section-title">【解説・ニュアンス】</div><div id="quiz-detail"></div></div>
-            <div class="detail-section" id="box-quiz-usage"><div class="section-title">【構文・例文】</div><div id="quiz-usage" style="margin-bottom: 5px; color: #fff;"></div><div id="quiz-example" class="example-text"></div></div>
-        </div>
-        <button id="btn-next-quiz" class="action-btn hidden" onclick="nextQuiz()">次のコマンドへ</button>
-    </div>
 
-    <!-- ダンジョン選択エリア -->
-    <div id="dungeon-select-area" class="window hidden">
-        <h2 style="text-align: center; color: var(--romasaga-gold-light); margin-top: 0; border-bottom: 2px dashed #555; padding-bottom: 10px;">ダンジョン討伐</h2>
-        <div style="display: flex; flex-direction: column; padding: 10px 0;">
-            <div class="dungeon-select-btn" onclick="startDungeon(20)">ゴブリンの洞窟 (20問)</div>
-            <div class="dungeon-select-btn" onclick="startDungeon(30)">魔術師の塔 (30問)</div>
-            <div class="dungeon-select-btn" onclick="startDungeon(50)">七英雄の迷宮 (50問)</div>
+        <div id="quiz-area" class="hidden">
+            <div id="dungeon-progress" class="dungeon-progress hidden">第 1 階層 / 全 20 階層</div>
+            <div id="quiz-word-container" style="position: relative;">
+                <div id="quiz-word" class="word-title">Word</div>
+            </div>
+            <div id="quiz-options"></div>
+            <div id="quiz-result"></div>
+            
+            <div id="quiz-explanation-box" class="explanation" style="border: none; padding-top: 0;">
+                <div id="quiz-meaning" class="meaning-main">Meaning</div>
+                <div class="detail-section" id="box-quiz-detail"><div class="section-title">【解説・ニュアンス】</div><div id="quiz-detail"></div></div>
+                <div class="detail-section" id="box-quiz-usage"><div class="section-title">【構文・例文】</div><div id="quiz-usage" style="margin-bottom: 5px; color: #fff;"></div><div id="quiz-example" class="example-text"></div></div>
+            </div>
+            <button id="btn-next-quiz" class="action-btn hidden" onclick="nextQuiz()">次のコマンドへ</button>
         </div>
-    </div>
 
-    <!-- ダンジョン結果エリア -->
-    <div id="dungeon-result-area" class="window hidden" style="text-align: center;">
-        <h2 style="color: var(--romasaga-gold-light);">ダンジョン踏破！</h2>
-        <div style="font-size: 20px; margin: 20px 0;">
-            討伐数: <span id="res-correct" style="color: #66ccff; font-size: 28px;">0</span> / <span id="res-total">0</span> 体
+        <div id="dungeon-select-area" class="hidden">
+            <div style="display: flex; flex-direction: column; padding: 10px 0;">
+                <div class="dungeon-select-btn" onclick="startDungeon(20)">ゴブリンの洞窟 (20問)</div>
+                <div class="dungeon-select-btn" onclick="startDungeon(30)">魔術師の塔 (30問)</div>
+                <div class="dungeon-select-btn" onclick="startDungeon(50)">七英雄の迷宮 (50問)</div>
+            </div>
         </div>
-        <div style="font-size: 24px; margin-bottom: 20px;">
-            討伐率: <span id="res-rate" style="color: var(--romasaga-gold-light); font-size: 36px;">0%</span>
-        </div>
-        <div style="background: rgba(0,0,0,0.5); padding: 15px; border: 1px solid #555; margin-bottom: 20px;">
-            <div style="font-size: 14px; color: #aaa;">特別討伐報酬</div>
-            <div style="font-size: 24px; color: #f1c40f;">+ <span id="res-exp">0</span> EXP</div>
-        </div>
-        <button class="action-btn" onclick="switchMode('record')">討伐記録を確認する</button>
-        <button class="action-btn" style="background: #000; color: #fff; border-color: #555;" onclick="switchMode('dungeon-select')">別のダンジョンへ</button>
-    </div>
 
-    <!-- 4. 討伐記録（データベース）エリア -->
-    <div id="record-area" class="window hidden">
-        <h2 style="text-align: center; color: var(--romasaga-gold-light); margin-top: 0; border-bottom: 2px dashed #555; padding-bottom: 10px;">討伐記録</h2>
-        <div id="record-list"></div>
+        <div id="dungeon-result-area" class="hidden" style="text-align: center;">
+            <div style="font-size: 20px; margin: 20px 0;">
+                討伐数: <span id="res-correct" style="color: #66ccff; font-size: 28px;">0</span> / <span id="res-total">0</span> 体
+            </div>
+            <div style="font-size: 24px; margin-bottom: 20px;">
+                討伐率: <span id="res-rate" style="color: var(--romasaga-gold-light); font-size: 36px;">0%</span>
+            </div>
+            <div style="background: rgba(0,0,0,0.5); padding: 15px; border: 1px solid #555; margin-bottom: 20px;">
+                <div style="font-size: 14px; color: #aaa;">特別討伐報酬</div>
+                <div style="font-size: 24px; color: #f1c40f;">+ <span id="res-exp">0</span> EXP</div>
+            </div>
+            <button class="action-btn" onclick="switchMode('record')">討伐記録を確認する</button>
+            <button class="action-btn" style="background: #000; color: #fff; border-color: #555;" onclick="switchMode('dungeon-select')">別のダンジョンへ</button>
+        </div>
+
+        <div id="record-area" class="hidden">
+            <div id="record-list"></div>
+        </div>
     </div>
 
 </div>
@@ -229,6 +232,7 @@
     let dungeonHistory = [];
     const nextLevelExp = 711;
 
+    // 称号リスト（全31種類）
     const titles = [
         { lv: 1, name: "見習い兵" }, { lv: 2, name: "帝国軽歩兵" }, { lv: 3, name: "帝国重装歩兵" },
         { lv: 4, name: "帝国猟兵" }, { lv: 5, name: "宮廷魔術師" }, { lv: 6, name: "フリーファイター" },
@@ -246,9 +250,7 @@
     const SAVE_KEY = 'saga_save_data';
 
     function saveGame() {
-        const saveData = {
-            level: playerLevel, exp: playerExp, combo: comboCount, history: dungeonHistory
-        };
+        const saveData = { level: playerLevel, exp: playerExp, combo: comboCount, history: dungeonHistory };
         localStorage.setItem(SAVE_KEY, JSON.stringify(saveData));
     }
 
@@ -267,9 +269,7 @@
             if(confirm("以前のセーブデータは消えますが、よろしいですか？")) {
                 playerLevel = 1; playerExp = 0; comboCount = 0; dungeonHistory = []; saveGame();
             } else { return; }
-        } else {
-            loadGameData();
-        }
+        } else { loadGameData(); }
         document.getElementById('title-screen').classList.add('hidden');
         document.getElementById('main-content').classList.remove('hidden');
         updateStatus();
@@ -333,19 +333,50 @@
         setTimeout(() => { effect.remove(); }, 1000);
     }
 
+    // UIのモード説明文を管理するオブジェクト
+    const modeInfo = {
+        flashcard: { title: "スキル習得", desc: "単語をタップして情報を解析し、知識をインプットせよ。" },
+        quiz: { title: "特訓（4択演習）", desc: "出題された単語に対し、正しい意味を4択から選んで答えよ。" },
+        dungeon: { title: "ダンジョン討伐", desc: "連続で敵（単語）を倒し、討伐率に応じて莫大なEXPを獲得せよ。" },
+        record: { title: "討伐記録", desc: "過去のダンジョン踏破記録と成長の軌跡を確認する。" }
+    };
+
     function switchMode(mode, keepDungeonState = false) {
         if (!keepDungeonState && isDungeonMode && mode !== 'quiz') {
             if(!confirm("ダンジョン攻略を中断して退却しますか？")) return;
             isDungeonMode = false; document.getElementById('dungeon-progress').classList.add('hidden');
         }
 
+        // タブのアクティブ状態リセット
         ['tab-flashcard', 'tab-quiz', 'tab-dungeon', 'tab-record'].forEach(id => document.getElementById(id).classList.remove('active'));
+        // エリアの非表示
         ['flashcard-area', 'quiz-area', 'dungeon-select-area', 'dungeon-result-area', 'record-area'].forEach(id => document.getElementById(id).classList.add('hidden'));
 
-        if (mode === 'flashcard') { document.getElementById('tab-flashcard').classList.add('active'); document.getElementById('flashcard-area').classList.remove('hidden'); loadFlashcard(); }
-        else if (mode === 'quiz') { document.getElementById('tab-quiz').classList.add('active'); document.getElementById('quiz-area').classList.remove('hidden'); loadQuiz(); }
-        else if (mode === 'dungeon-select') { document.getElementById('tab-dungeon').classList.add('active'); document.getElementById('dungeon-select-area').classList.remove('hidden'); }
-        else if (mode === 'record') { document.getElementById('tab-record').classList.add('active'); document.getElementById('record-area').classList.remove('hidden'); renderRecords(); }
+        if (mode === 'flashcard') { 
+            document.getElementById('tab-flashcard').classList.add('active'); 
+            document.getElementById('flashcard-area').classList.remove('hidden'); 
+            updateModeHeader('flashcard'); loadFlashcard(); 
+        }
+        else if (mode === 'quiz') { 
+            document.getElementById('tab-quiz').classList.add('active'); 
+            document.getElementById('quiz-area').classList.remove('hidden'); 
+            updateModeHeader('quiz'); loadQuiz(); 
+        }
+        else if (mode === 'dungeon-select') { 
+            document.getElementById('tab-dungeon').classList.add('active'); 
+            document.getElementById('dungeon-select-area').classList.remove('hidden'); 
+            updateModeHeader('dungeon'); 
+        }
+        else if (mode === 'record') { 
+            document.getElementById('tab-record').classList.add('active'); 
+            document.getElementById('record-area').classList.remove('hidden'); 
+            updateModeHeader('record'); renderRecords(); 
+        }
+    }
+
+    function updateModeHeader(modeKey) {
+        document.getElementById('ui-mode-title').innerText = modeInfo[modeKey].title;
+        document.getElementById('ui-mode-desc').innerText = modeInfo[modeKey].desc;
     }
 
     function setTextOrHide(elementId, boxId, text) {
@@ -413,9 +444,9 @@
 
         const optionsContainer = document.getElementById('quiz-options');
         optionsContainer.innerHTML = '';
-        options.forEach(optionText => {
+        options.forEach((optionText, index) => {
             const btn = document.createElement('button');
-            btn.className = 'quiz-option'; btn.innerText = optionText; 
+            btn.className = 'quiz-option'; btn.innerText = `${index + 1}. ${optionText}`; 
             btn.onclick = () => checkAnswer(optionText, correctWord, btn);
             optionsContainer.appendChild(btn);
         });
@@ -442,7 +473,7 @@
             resultDiv.innerText = '敗北...。連撃が途切れた。'; resultDiv.style.color = '#e74c3c';
             clickedBtn.classList.add('wrong');
             
-            allBtns.forEach(btn => { if(btn.innerText === correctJa) btn.classList.add('correct'); });
+            allBtns.forEach(btn => { if(btn.innerText.includes(correctJa)) btn.classList.add('correct'); });
             saveGame(); updateStatus();
         }
 
@@ -475,6 +506,7 @@
         document.getElementById('quiz-area').classList.add('hidden');
         document.getElementById('dungeon-progress').classList.add('hidden');
         document.getElementById('dungeon-result-area').classList.remove('hidden');
+        updateModeHeader('dungeon'); // ヘッダーを討伐結果用の文言に戻す
 
         let rate = Math.floor((dungeonCorrect / dungeonTotal) * 100);
         let bonusExp = Math.floor((rate / 100) * dungeonTotal * 50);
